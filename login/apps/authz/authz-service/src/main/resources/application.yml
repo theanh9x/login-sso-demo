@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    username: theanh
+    password: anh1234
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: e78d93f1d169dfccb8ad
+            client-secret: fa6918204d74090eff9be366083740913a9910df
+          google:
+            client-id: 795315743428-snk6se4kadgvv6q1dlf9qf0uosv68cqt.apps.googleusercontent.com
+            client-secret: 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
