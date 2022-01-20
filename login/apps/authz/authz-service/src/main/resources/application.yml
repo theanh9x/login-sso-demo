@@ -1,8 +1,6 @@
 spring:
-  server:
-    port: 8081
   datasource:
-    url: jdbc:mysql://localhost:3306/login_social?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+    url: jdbc:mysql://localhost:3306/authz?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
     username: root
     password:
 
@@ -14,43 +12,22 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            clientId: 795315743428-snk6se4kadgvv6q1dlf9qf0uosv68cqt.apps.googleusercontent.com
-            clientSecret: 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
-            scope:
-              - email
-              - profile
-          github:
-            client-id: e78d93f1d169dfccb8ad
-            client-secret: fa6918204d74090eff9be366083740913a9910df
-            scope:
-              - user:email
-              - read:user
-          facebook:
-            clientId: 121189305185277
-            clientSecret: 42ffe5aa7379e8326387e0fe16f34132
-            scope:
-              - email
-              - public_profile
 
-        provider:
-          facebook:
-            authorizationUri: https://www.facebook.com/v3.0/dialog/oauth
-            tokenUri: https://graph.facebook.com/v3.0/oauth/access_token
-            userInfoUri: https://graph.facebook.com/v3.0/me?fields=id,first_name,middle_name,last_name,name,email,verified,is_verified,picture.width(250).height(250)
-
-app:
-  auth:
-    tokenSecret: 04ca023b39512e46d0c2cf4b48d5aac61d34302994c87ed4eff225dcf3b0a218739f3897051a057f9b846a69ea2927a587044164b7bae5e1306219d50b588cb1
-    tokenExpirationMsec: 864000000
-  cors:
-    allowedOrigins: http://localhost:3000,http://localhost:8080
+security:
   oauth2:
-    authorizedRedirectUris:
-      - http://localhost:3000/oauth2/redirect
-      - myandroidapp://oauth2/redirect
-      - myiosapp://oauth2/redirect
+    client:
+      clientId: clientapp
+      clientSecret: 123456
+      accessTokenUri: https://sso-dev.directsale.vn/oauth/token
+      userAuthorizationUri: https://sso-dev.directsale.vn/oauth/authorize
+      tokenName: access_token
+      authorizedGrantTypes: authorization_code
+      scope:
+        - openid
+        - profile
+        - email
+    resource:
+      userInfoUri: https://sso-dev.directsale.vn/user/me
+
+server:
+  port : 8082

@@ -1,24 +1,32 @@
 package com.accesstrade.authz.api;
 
-import com.accesstrade.authz.exception.ResourceNotFoundException;
-import com.accesstrade.authz.model.User;
-import com.accesstrade.authz.repository.UserRepository;
-import com.accesstrade.authz.security.CurrentUser;
-import com.accesstrade.authz.security.UserPrincipal;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.security.Principal;
+
 
 @RestController
 public class UserController {
-    @Autowired
-    private UserRepository userRepository;
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @GetMapping("/user/me")
-    @PreAuthorize("hasRole('USER')")
-    public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
-        return userRepository.findById(userPrincipal.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
+    @RequestMapping("/user")
+    public Principal user(Principal principal, HttpServletRequest request) {
+
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            System.out.println("session: "+ session);
+        }
+
+        String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
+        logger.info("Request responded by " + sessionId);
+
+        return principal;
     }
+
 }
